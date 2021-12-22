@@ -6,10 +6,10 @@ const servicio = require('../services/index')
 
 function guardar(req, res){
     let User = new Usuario();
-    User.nombre = req.body.nombre;
-    User.mail = req.body.mail;
-    User.pass = req.body.pass;
-    User.activo = req.body.activo; // campo 
+    User.nombre = req.body.nombre; // campo nombre
+    User.mail = req.body.mail; // campo de mail
+    User.pass = req.body.pass; // campo de password
+    User.activo = req.body.activo; // campo activo
 
     User.save((err, usuarioStore) => {
         if (err){
@@ -63,9 +63,24 @@ const validaVigenciaUsuario = (req,res) =>{
     });
 }
 
+function modificarUsuario(req, res){
+    let idusuario = req.params.id
+    Usuario.findByIdAndUpdate(idusuario, req.body, (err, usuario) => {
+        if (err){
+            return res.status(500).send({ mensaje: 'error al modificar el usuario '})
+        }
+        if (!usuario) {
+            return res.status(400).send({mensaje : 'error, el usuario no existe'})
+        }
+
+        res.status(200).send({ usuario });
+    })
+}
+
 module.exports = {
     guardar,
     todos,
     validar,
-    validaVigenciaUsuario
+    validaVigenciaUsuario,
+    modificarUsuario
 };
