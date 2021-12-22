@@ -6,7 +6,7 @@ const servicio = require('../services/index')
 
 function guardar(req, res){
     let User = new Usuario();
-    User.nombre = req.body.usuario;
+    User.nombre = req.body.nombre;
     User.mail = req.body.mail;
     User.pass = req.body.pass;
 
@@ -15,19 +15,17 @@ function guardar(req, res){
             res.status(500).send(`Error base de datos > ${err}`)
         }
         res.status(200).send({"msg": "creado correctamente", 'usuario': usuarioStore})
-
     })
 }
 
 function validar(req, res){
     var password = req.body.pass;
-
     Usuario.findOne({'mail': req.body.mail}, (err, user) => {
         if (err){
             return res.status(500).send({ mensaje: 'error al realizar la peticion' })
         }
         if (!user){
-            return res.status(401).send({ mensaje: 'Error usuario no existe' })
+            return res.status(401).send({ mensaje: `Error usuario no existe ${req.body.mail}`})
         }
         bcrypt.compare(password, user.pass, function(error, isMatch) {
             if (error) {
