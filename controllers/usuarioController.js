@@ -9,6 +9,7 @@ function guardar(req, res){
     User.nombre = req.body.nombre;
     User.mail = req.body.mail;
     User.pass = req.body.pass;
+    User.activo = req.body.activo; // campo 
 
     User.save((err, usuarioStore) => {
         if (err){
@@ -35,7 +36,7 @@ function validar(req, res){
                 res.status(401).send({ 'mensaje':'incorrecto'})
             } 
             else {
-                res.status(200).send({ 'mensaje':'correcto','token':servicio.createToken(user)})
+                res.status(200).send({ 'mensaje':'correcto','token':servicio.createToken(user), 'activo': user.activo })
             }
         })
     })

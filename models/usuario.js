@@ -15,7 +15,8 @@ const UsuarioSchema = Schema (
         pass: {
             type: String,
             required: true
-        }
+        },
+        activo: Boolean
     }
 )
 UsuarioSchema.pre('save', function(next){
